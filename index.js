@@ -18,13 +18,17 @@ async function main() {
     let chargerState = await easee.getChargerState(chargers[i].id);
 
     console.log("Updating Domoticz");
-    let idx = conf.devices.charger1;
-    let power = Math.round((chargerState.totalPower * 1000));
-    let update = await dz.updateUdevice(idx, 0, power);
+    let idx     = conf.devices.charger1;
+    let idx2    = conf.devices.charger2;
+    let power   = Math.round((chargerState.totalPower * 1000));
+    let update  = await dz.updateUdevice(idx, 0, power);
+    let update2 = await dz.updateUdevice(idx2, 0, power);
     if (update) {
       console.log("Sucessfully updated device: " + idx + " with value: " + power);
+      console.log("Sucessfully updated device: " + idx2 + " with value: " + power);
     } else {
       console.log("Failed to update device: " + idx + " with value: " + power);
+      console.log("Failed to update device: " + idx2 + " with value: " + power);
     }
   }
 }

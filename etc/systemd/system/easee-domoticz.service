@@ -1,0 +1,17 @@
+[Unit]
+Description=easee Domoticz updater
+Wants=network-online.target
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+User=root
+PermissionsStartOnly=true
+WorkingDirectory=/opt/easee-domoticz
+ExecStart=node /opt/easee-domoticz/index.js
+Restart=always
+RestartSec=3
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
