@@ -1,0 +1,9 @@
+[submodule "easeejs"]
+	path = easeejs
+	url = git@github.com:AceMax/easeejs.git
+[submodule "domoticzjs"]
+	path = domoticzjs
+	url = git@github.com:AceMax/domoticzjs.git
+[submodule "nibejs"]
+	path = nibejs
+	url = git@github.com:AceMax/nibejs.git

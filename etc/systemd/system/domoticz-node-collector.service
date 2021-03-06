@@ -1,5 +1,5 @@
 [Unit]
-Description=easee Domoticz updater
+Description=Domoticz external device collector
 Wants=network-online.target
 After=syslog.target network-online.target
 
@@ -7,8 +7,8 @@ After=syslog.target network-online.target
 Type=simple
 User=root
 PermissionsStartOnly=true
-WorkingDirectory=/opt/easee-domoticz
-ExecStart=node /opt/easee-domoticz/index.js
+WorkingDirectory=/opt/domoticz-node-collector
+ExecStart=node /opt/domoticz-node-collector/index.js
 Restart=always
 RestartSec=3
 KillMode=process

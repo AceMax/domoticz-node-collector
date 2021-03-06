@@ -8,6 +8,7 @@ const fs    = require('fs');
 const conf  = JSON.parse(fs.readFileSync(__dirname + '/conf/config.json'));
 const easee = require("./easeejs/modules/easee");
 const dz    = require("./domoticzjs/modules/domoticz");
+const nibe  = require("./nibejs/modules/nibe");
 
 async function main() {
   console.log("--- " + currentTimeString() + " ---");
@@ -17,19 +18,25 @@ async function main() {
   for(let i = 0; i < chargers.length; i++) {
     let chargerState = await easee.getChargerState(chargers[i].id);
 
-    console.log("Updating Domoticz");
+    console.log("Updating Domoticz - easee");
     let idx     = conf.devices.charger1;
-    let idx2    = conf.devices.charger2;
     let power   = Math.round((chargerState.totalPower * 1000));
     let update  = await dz.updateUdevice(idx, 0, power);
-    let update2 = await dz.updateUdevice(idx2, 0, power);
     if (update) {
       console.log("Sucessfully updated device: " + idx + " with value: " + power);
-      console.log("Sucessfully updated device: " + idx2 + " with value: " + power);
     } else {
       console.log("Failed to update device: " + idx + " with value: " + power);
-      console.log("Failed to update device: " + idx2 + " with value: " + power);
     }
+  }
+
+  let householdConsumption = await nibe.householdConsumption(conf.nibe.systemId);
+  let hc = dz.updateUdevice(2, 0, householdConsumption.p1current + ';' + householdConsumption.p2current + ';' + householdConsumption.p3current)
+  if (hc) {
+    console.log("Updating Domoticz - Nibe currents");
+  }
+  let hp = dz.updateUdevice(3, 0, householdConsumption.totalPower);
+  if (hp) {
+    console.log("Updating Domoticz - Nibe power");
   }
 }
 
